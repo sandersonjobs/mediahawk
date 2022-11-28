@@ -1,0 +1,34 @@
+---
+version: "3"
+services:
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    network_mode: 'host'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+      - NZBGET_USER=${NZBGET_USER} #optional
+      - NZBGET_PASS=${NZBGET_PASS} #optional
+    volumes:
+      - /home/msanderson/data/nzbget/config:/config
+      - /home/msanderson/data/nzbget/downloads:/downloads #optional
+    ports:
+      - "6789:6789"
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: 'host'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=US/Eastern
+    volumes:
+      - /home/msanderson/data/sonarr/config:/config
+      - /home/msanderson/data/sonarr/tv:/tv #optional
+      - /home/msanderson/data/sonarr/downloads:/downloads #optional
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
